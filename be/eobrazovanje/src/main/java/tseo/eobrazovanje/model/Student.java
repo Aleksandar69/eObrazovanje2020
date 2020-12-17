@@ -50,7 +50,7 @@ public class Student extends User {
 	public Student(Long id, String brojIndexa, String tekuciRacun, Double stanje, String username, String password,
 			String ime, String prezime, String jmbg, String adresa, String brojTelefona) {
 		super( id,  username,password, ime, prezime, jmbg,adresa,
-				Role.STUDENT, Role.STUDENT.getAuthorities());
+				Role.STUDENT.name(), Role.STUDENT.getAuthorities());
 		this.brojIndexa = brojIndexa;
 		this.tekuciRacun = tekuciRacun;
 		this.stanje = stanje;

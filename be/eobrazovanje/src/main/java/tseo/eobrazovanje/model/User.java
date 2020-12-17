@@ -28,7 +28,7 @@ public class User {
 	protected String jmbg;
 	protected String adresa;
 //	@Enumerated(EnumType.STRING)
-	protected Role role;
+	protected String role;
     private String[] authorities;
 
 	public User() {
@@ -36,7 +36,7 @@ public class User {
 	}
 
 	public User(Long id, String username, String password, String ime, String prezime, String jmbg, String adresa,
-			Role role, String[] authorities) {
+			String role, String[] authorities) {
 		super();
 		this.id = id;
 		this.ime = ime;
@@ -86,7 +86,7 @@ public class User {
 		return jmbg;
 	}
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
@@ -110,7 +110,7 @@ public class User {
 		return this;
 	}
 
-	public User setRole(Role role) {
+	public User setRole(String role) {
 		this.role = role;
 		return this;
 	}
