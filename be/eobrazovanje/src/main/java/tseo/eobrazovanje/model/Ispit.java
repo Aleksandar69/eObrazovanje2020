@@ -101,4 +101,31 @@ public class Ispit {
 	public Set<Prijava> getPrijave() {
 		return prijave;
 	}
+
+	public void setPrijave(Set<Prijava> prijave) {
+		this.prijave = prijave;
+	}
+
+	public Float getUsmeniUkupnoBodova() {
+		return usmeniUkupnoBodova;
+	}
+
+	public void setUsmeniUkupnoBodova(Float usmeniUkupnoBodova) {
+		this.usmeniUkupnoBodova = usmeniUkupnoBodova;
+	}
+
+	public Float getUsmeniMinimumBodova() {
+		return usmeniMinimumBodova;
+	}
+
+	public void setUsmeniMinimumBodova(Float usmeniMinimumBodova) {
+		this.usmeniMinimumBodova = usmeniMinimumBodova;
+	}
+
+	@Override
+	public String toString() {
+		return "Ispit iz predmeta " + predmet.getNaziv().toString() + ", odrzace se datuma: " + datum + ", rok za prijavu ispita je: "  + rokZaPrijavu + ".";
+	}
+	
+	
 }

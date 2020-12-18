@@ -75,5 +75,17 @@ public class UserController {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	public ResponseEntity deleteOne(@PathVariable("id") long id) {
+		User user = userService.findOne(id);
+		if (user != null) {
+			userService.delete(user.getId());
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
 
 }

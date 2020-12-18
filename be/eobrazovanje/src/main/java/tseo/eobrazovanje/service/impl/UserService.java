@@ -11,12 +11,15 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import tseo.eobrazovanje.dto.PasswordDto;
 import tseo.eobrazovanje.enumeration.Role;
 import tseo.eobrazovanje.exception.UserNotFoundException;
 import tseo.eobrazovanje.exception.UsernameExistException;
@@ -115,6 +118,27 @@ public class UserService implements UserServiceInterface, UserDetailsService{
 	@Override
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
+	}
+
+	@Override
+	public Boolean delete(Long id) {
+		userRepository.deleteById(id);
+		return true;
+	}
+
+	@Override
+	public ResponseEntity<Void> updatePassword(User user, PasswordDto passwordDto) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		if (!(passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+		save(user);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
 	}
 	
 }

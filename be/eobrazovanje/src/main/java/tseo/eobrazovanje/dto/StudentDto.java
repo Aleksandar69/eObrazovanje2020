@@ -14,7 +14,7 @@ public class StudentDto {
 	private String adresa;
 	private String brojTelefona;
 	private boolean subscribedTelegram;
-	private Role role;
+	private String role;
 	private double stanje;
 
 	public StudentDto() {
@@ -22,7 +22,7 @@ public class StudentDto {
 	}
 
 	public StudentDto(String username, String password, String ime, String prezime, String jmbg, String brojIndexa,
-			String adresa, String brojTelefona, boolean subscribedTelegram, Role role, double stanje) {
+			String adresa, String brojTelefona, boolean subscribedTelegram, String role, double stanje) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
@@ -49,11 +49,11 @@ public class StudentDto {
 	}
 
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
