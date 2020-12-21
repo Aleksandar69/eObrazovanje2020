@@ -65,7 +65,7 @@ public class UserController {
 	public ResponseEntity getAll() {
 		return new ResponseEntity(userService.findAll(), HttpStatus.OK);
 	}
-
+ 
 	@GetMapping("/{id}")
 	public ResponseEntity getOne(@PathVariable("id") long id) {
 		User user = userService.findOne(id);
@@ -77,7 +77,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		User user = userService.findOne(id);
 		if (user != null) {

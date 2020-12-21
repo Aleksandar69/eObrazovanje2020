@@ -22,7 +22,7 @@ public class Prijava {
 	@NotNull
 	@ManyToOne
 	@JoinColumn
-	private Prijava ispit;
+	private Ispit ispit;
 	@NotNull
 	@ManyToOne
 	@JoinColumn
@@ -40,7 +40,7 @@ public class Prijava {
 
 	}
 
-	public Prijava(Long id, Date datumPrijave, Prijava ispit, Student student, Float osvojeniBodoviIspit,
+	public Prijava(Long id, Date datumPrijave, Ispit ispit, Student student, Float osvojeniBodoviIspit,
 			Float osvojeniBodoviUsmeni, Float predispitniBodovi, boolean polozio, boolean ocenjeno) {
 		super();
 		this.id = id;
@@ -62,7 +62,7 @@ public class Prijava {
 		return datumPrijave;
 	}
 
-	public Prijava getIspit() {
+	public Ispit getIspit() {
 		return ispit;
 	}
 
@@ -94,7 +94,7 @@ public class Prijava {
 		this.datumPrijave = datumPrijave;
 	}
 
-	public void setIspit(Prijava ispit) {
+	public void setIspit(Ispit ispit) {
 		this.ispit = ispit;
 	}
 
@@ -125,6 +125,5 @@ public class Prijava {
 	public void setOcenjeno(boolean ocenjeno) {
 		this.ocenjeno = ocenjeno;
 	}
-
 
 }

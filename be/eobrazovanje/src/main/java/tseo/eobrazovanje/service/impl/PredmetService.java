@@ -146,9 +146,9 @@ public class PredmetService implements PredmetServiceInterface{
 					}
 				}
 			}
-			if (!p) {
-				nepolozeni.add(predmet);
-			}
+//			if (!p) {
+//				nepolozeni.add(predmet);
+//			}
 		}
 		return nepolozeni;
 	}

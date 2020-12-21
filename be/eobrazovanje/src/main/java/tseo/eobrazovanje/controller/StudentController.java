@@ -31,7 +31,12 @@ import tseo.eobrazovanje.model.Ispit;
 import tseo.eobrazovanje.model.Prijava;
 import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.model.Uplata;
+import tseo.eobrazovanje.service.IspitServiceInterface;
+import tseo.eobrazovanje.service.PredmetServiceInterface;
+import tseo.eobrazovanje.service.PrijavaServiceInterface;
 import tseo.eobrazovanje.service.StudentServiceInterface;
+import tseo.eobrazovanje.service.UplataServiceInterface;
+import tseo.eobrazovanje.service.impl.DokumentService;
 
 @RestController
 @RequestMapping("/studenti")
@@ -93,7 +98,6 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/predispitne-obaveze")
-	@PreAuthorize("hasAnyAuthority('NASTAVNIK', 'STUDENT')")
 	public ResponseEntity getPredispitneObaveze(@PathVariable("id") long id,
 			@RequestParam(value = "predmet", required = false) Long predmetId) {
 		Student student = studentService.findOne(id);
@@ -110,7 +114,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/predmeti")
-	@PreAuthorize("hasAuthority('STUDENT')")
+	
 	public ResponseEntity getPredmeti(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -121,7 +125,7 @@ public class StudentController {
 		}
 	}
 
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	@PostMapping("/{id}/dokumenti")
 	public ResponseEntity postOne(HttpServletRequest req, @PathVariable Long id,
 			@RequestParam("dokument") MultipartFile file, @RequestParam("naziv") String naziv) {
@@ -134,7 +138,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/prijave")
-	@PreAuthorize("hasAuthority('STUDENT')")
+//	
 	public ResponseEntity getPrijave(@PathVariable("id") long id, Pageable pageable) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -150,7 +154,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/prijava-ispita")
-	@PreAuthorize("hasAuthority('STUDENT')")
+	
 	public ResponseEntity getIspitiZaPrijavu(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -163,7 +167,6 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/polozeni-ispiti")
-	@PreAuthorize("hasAuthority('STUDENT')")
 	public ResponseEntity getPolozeniPredmeti(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -174,7 +177,6 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/nepolozeni-ispiti")
-	@PreAuthorize("hasAuthority('STUDENT')")
 	public ResponseEntity getNepolozeniPredmeti(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -186,7 +188,6 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/uplate")
-	@PreAuthorize("hasAnyAuthority('ADMINISTRATOR', 'STUDENT')")
 	public ResponseEntity getUplate(@PathVariable("id") long id, Pageable pageable) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -202,7 +203,7 @@ public class StudentController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	public ResponseEntity postOne(@Validated @RequestBody Student student, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -211,7 +212,7 @@ public class StudentController {
 	}
 
 	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -223,7 +224,7 @@ public class StudentController {
 	}
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody StudentDto student,
 			Errors errors) {
 		if (errors.hasErrors()) {
@@ -238,7 +239,7 @@ public class StudentController {
 	}
 
 	@PutMapping("/{id}/broj-telefona")
-	@PreAuthorize("hasAuthority('STUDENT')")
+	
 	public ResponseEntity changePhoneNumber(@PathVariable("id") long id,
 			@Validated @RequestBody StudentDto studentdto) {
 

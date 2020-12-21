@@ -50,7 +50,7 @@ public class DokumentController {
 		}
 	}
 
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		Dokument dokument = dokumentService.findOne(id);
@@ -63,7 +63,7 @@ public class DokumentController {
 
 	}
 
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	
 	@PutMapping("/{id}")
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody DokumentDto dto, Errors errors) {
 

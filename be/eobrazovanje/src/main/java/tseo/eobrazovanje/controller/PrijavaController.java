@@ -16,37 +16,49 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import tseo.eobrazovanje.dto.NastavnikDto;
-import tseo.eobrazovanje.model.Nastavnik;
-import tseo.eobrazovanje.service.impl.NastavnikService;
+import tseo.eobrazovanje.dto.PrijavaDto;
+import tseo.eobrazovanje.model.Prijava;
+import tseo.eobrazovanje.model.Student;
+import tseo.eobrazovanje.service.IspitServiceInterface;
+import tseo.eobrazovanje.service.NastavnikServiceInterface;
+import tseo.eobrazovanje.service.PrijavaServiceInterface;
+import tseo.eobrazovanje.service.StudentServiceInterface;
 
 @RestController
-@RequestMapping("/nastavnik")
-public class NastavnikController {
-	
+@RequestMapping("/prijave")
+public class PrijavaController {
+
 	@Autowired
-	NastavnikService nastavnikService;
+	PrijavaServiceInterface prijavaService;
 
+	@Autowired
+	IspitServiceInterface ispitService;
+
+	@Autowired
+	NastavnikServiceInterface nastavnikService;
+
+	@Autowired
+	StudentServiceInterface studentService;
+	
+	
 	@GetMapping
-	public ResponseEntity getAll(@RequestParam(value = "ime", defaultValue = "") String ime,
-			@RequestParam(value = "prezime", defaultValue = "") String prezime, Pageable pageable) {
+	public ResponseEntity getAll(Pageable pageable) {
 
-		Page<Nastavnik> nastavnici = nastavnikService.findAll(ime, prezime, pageable);
+		Page<Prijava> prijave = prijavaService.findAll(pageable);
 		HttpHeaders headers = new HttpHeaders();
-		headers.set("total", String.valueOf(nastavnici.getTotalPages()));
+		headers.set("total", String.valueOf(prijave.getTotalPages()));
 
-		return ResponseEntity.ok().headers(headers).body(nastavnici.getContent());
+		return ResponseEntity.ok().headers(headers).body(prijave.getContent());
 
 	}
-
+	
 	@GetMapping("/{id}")
 	public ResponseEntity getOne(@PathVariable("id") long id) {
-		Nastavnik nastavnik = nastavnikService.findOne(id);
-		if (nastavnik != null) {
-			return new ResponseEntity(nastavnik, HttpStatus.OK);
+		Prijava prijava = prijavaService.findOne(id);
+		if (prijava != null) {
+			return new ResponseEntity(prijava, HttpStatus.OK);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
@@ -54,56 +66,48 @@ public class NastavnikController {
 
 	@PostMapping
 	
-	public ResponseEntity postOne(@Validated @RequestBody Nastavnik nastavnik, Errors errors) {
+	public ResponseEntity postOne(@Validated @RequestBody PrijavaDto dto, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
-		if (nastavnik != null) {
-			return new ResponseEntity(nastavnikService.save(nastavnik), HttpStatus.CREATED);
-		} else {
+		System.out.println(dto);
+		Prijava prijava = prijavaService.save(dto);
+
+		if (prijava == null) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity(prijava, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}")
 	
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
-		Nastavnik nastavnik = nastavnikService.findOne(id);
-		if (nastavnik != null) {
-			nastavnikService.delete(nastavnik.getId());
+		if (prijavaService.delete(id)) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-
 	}
+	
 
 	@PutMapping("/{id}")
-	
-	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody NastavnikDto dto, Errors errors) {
+	@PreAuthorize("hasAuthority('NASTAVNIK')")
+	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody PrijavaDto dto, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 		if (dto.getId() != id) {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		} else {
-			Nastavnik nastavnik = nastavnikService.update(dto);
-			if (nastavnik == null) {
-				return new ResponseEntity(HttpStatus.NOT_FOUND);
+			Prijava prijava = prijavaService.update(dto);
+			if (prijava == null) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			} else {
-				return new ResponseEntity(nastavnik, HttpStatus.OK);
+				if(prijava.isOcenjeno()){
+					Student student = studentService.findOne(dto.getStudent());					
+				}
+				return new ResponseEntity(prijava, HttpStatus.CREATED);
 			}
 		}
 	}
-
-	@GetMapping("/{id}/predmeti")
-	public ResponseEntity getPredmeti(@PathVariable("id") long id) {
-		Nastavnik nastavnik = nastavnikService.findOne(id);
-		if (nastavnik != null) {
-			return new ResponseEntity(nastavnik.getPredmeti(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
-	}
-
 }

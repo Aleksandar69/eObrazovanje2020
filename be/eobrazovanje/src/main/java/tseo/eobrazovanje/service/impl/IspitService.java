@@ -17,6 +17,7 @@ import tseo.eobrazovanje.model.Predmet;
 import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.repo.IspitRepository;
 import tseo.eobrazovanje.service.IspitServiceInterface;
+import tseo.eobrazovanje.service.PredispitneObavezeSablonServiceInterface;
 
 @Service
 public class IspitService implements IspitServiceInterface {
@@ -32,7 +33,7 @@ public class IspitService implements IspitServiceInterface {
 	StudentService studentService;
 
 	@Autowired
-	PredispitneObavezeSablonService sabloniService;
+	PredispitneObavezeSablonServiceInterface sabloniService;
 
 	@Autowired
 	PrijavaService prijavaService;
