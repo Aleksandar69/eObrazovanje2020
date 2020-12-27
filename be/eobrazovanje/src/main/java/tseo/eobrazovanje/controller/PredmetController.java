@@ -72,11 +72,21 @@ public class PredmetController {
 		Predmet predmet = predmetService.findOne(id);
 		if (predmet != null) {
 			if (nastavnikId != null) {
+				List<Ispit> ispiti1 = ispitService.findByPredmetAndNastavnikId(predmet, nastavnikId);
+				System.out.println("Prije petlje ispit");
+				for (Ispit ispit : ispiti1) {
+					System.out.println("ISPIT!: "+ ispit);
+				}
 				Page<Ispit> ispiti = ispitService.findByPredmetAndNastavnikId(predmet, nastavnikId, pageable);
 				HttpHeaders headers = new HttpHeaders();
 				headers.set("total", String.valueOf(ispiti.getTotalPages()));
 				return ResponseEntity.ok().headers(headers).body(ispiti.getContent());
 			} else {
+				List<Ispit> ispiti1 = ispitService.findByPredmet(predmet);
+				System.out.println("Prije petlje ispit");
+				for (Ispit ispit : ispiti1) {
+					System.out.println("ISPIT!: " + ispit);
+				}
 				Page<Ispit> ispiti = ispitService.findByPredmet(predmet, pageable);
 				HttpHeaders headers = new HttpHeaders();
 				headers.set("total", String.valueOf(ispiti.getTotalPages()));

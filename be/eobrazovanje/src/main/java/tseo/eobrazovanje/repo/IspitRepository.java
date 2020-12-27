@@ -23,7 +23,11 @@ public interface IspitRepository extends JpaRepository<Ispit, Long>  {
 	List<Ispit> findByStudentAndDatum(@Param("student") Student student, @Param("datum") Date date);
 
 	Page<Ispit> findByPredmet(Predmet predmet, Pageable pageable);
+	
+	List<Ispit> findByPredmet(Predmet predmet);
 
 	Page<Ispit> findByPredmetAndNastavnikId(Predmet predmet, Long nastavnikId, Pageable pageable);
+
+	List<Ispit> findByPredmetAndNastavnikId(Predmet predmet, Long nastavnikId);
 
 }

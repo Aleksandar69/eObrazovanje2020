@@ -3,12 +3,15 @@ package tseo.eobrazovanje.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tseo.eobrazovanje.dto.PredispitneObavezeSablonDto;
 import tseo.eobrazovanje.model.PredispitneObaveze;
 import tseo.eobrazovanje.model.PredispitneObavezeSablon;
+import tseo.eobrazovanje.repo.PredispitneObavezeRepository;
 import tseo.eobrazovanje.repo.PredispitneObavezeSablonRepository;
 import tseo.eobrazovanje.service.PredispitneObavezeSablonServiceInterface;
 
@@ -57,6 +60,8 @@ public class PredispitneObavezeSablonService implements PredispitneObavezeSablon
 			predispitneObavezeService.delete(p.getId());
 		}
 		sablonRepository.deleteById(id);
+		sablonRepository.delete(sablon);
+		System.out.println("deleted sablon id " + id + "sablon name " + sablon.getNaziv());
 		return true;
 	}
 

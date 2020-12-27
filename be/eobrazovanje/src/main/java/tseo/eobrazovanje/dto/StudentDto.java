@@ -13,7 +13,6 @@ public class StudentDto {
 	private String password;
 	private String adresa;
 	private String brojTelefona;
-	private boolean subscribedTelegram;
 	private String role;
 	private double stanje;
 
@@ -22,7 +21,7 @@ public class StudentDto {
 	}
 
 	public StudentDto(String username, String password, String ime, String prezime, String jmbg, String brojIndexa,
-			String adresa, String brojTelefona, boolean subscribedTelegram, String role, double stanje) {
+			String adresa, String brojTelefona, String role, double stanje) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
@@ -32,7 +31,6 @@ public class StudentDto {
 		this.password = password;
 		this.adresa = adresa;
 		this.brojTelefona = brojTelefona;
-		this.subscribedTelegram = subscribedTelegram;
 		this.role = role;
 		this.stanje = stanje;
 		
@@ -57,13 +55,6 @@ public class StudentDto {
 		this.role = role;
 	}
 
-	public boolean isSubscribedTelegram() {
-		return subscribedTelegram;
-	}
-
-	public void setSubscribedTelegram(boolean subscribedTelegram) {
-		this.subscribedTelegram = subscribedTelegram;
-	}
 
 	public String getBrojTelefona() {
 		return brojTelefona;

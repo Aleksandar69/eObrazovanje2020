@@ -1,5 +1,7 @@
 package tseo.eobrazovanje.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,5 +23,7 @@ public interface NastavnikServiceInterface {
 	Page<Nastavnik> findAll(String ime, String prezime, Pageable pageable);
 
 	Nastavnik changePassword(Nastavnik nastavnik);
+	
+	List<Nastavnik> findAllLowercaseList(String ime, String prezime);
 
 }

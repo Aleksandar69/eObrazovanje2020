@@ -30,4 +30,9 @@ public interface IspitServiceInterface {
 	Page<Ispit> findByPredmet(Predmet predmet, Pageable pageable);
 
 	Page<Ispit> findByPredmetAndNastavnikId(Predmet predmet, Long nastavnikId, Pageable pageable);
+	
+	List<Ispit> findByPredmetAndNastavnikId(Predmet predmet, Long nastavnikId);
+	
+	List<Ispit> findByPredmet(Predmet predmet);
+
 }

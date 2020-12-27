@@ -1,5 +1,6 @@
 package tseo.eobrazovanje.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ public class NastavnikService implements NastavnikServiceInterface{
 	public Page<Nastavnik> findAll(String ime, String prezime, Pageable pageable) {
 		return nastavnikRepository.findAllByImeIgnoreCaseContainsAndPrezimeIgnoreCaseContains(ime, prezime, pageable);
 	}
+	
+
+	@Override
+	public List<Nastavnik> findAllLowercaseList(String ime, String prezime) {
+		return nastavnikRepository.findAllByImeIgnoreCaseContainsAndPrezimeIgnoreCaseContains(ime, prezime);
+	}
+
 
 	@Override
 	public Nastavnik changePassword(Nastavnik nastavnik) {
@@ -82,6 +90,8 @@ public class NastavnikService implements NastavnikServiceInterface{
 			return save(nastavnik);
 		}
 	}
+
+
 
 
 }

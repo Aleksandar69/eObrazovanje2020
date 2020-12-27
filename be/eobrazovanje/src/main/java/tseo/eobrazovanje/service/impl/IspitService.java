@@ -151,5 +151,15 @@ public class IspitService implements IspitServiceInterface {
 		return ispitRepository.findByPredmetAndNastavnikId(predmet, nastavnikId, pageable);
 	}
 
+	@Override
+	public List<Ispit> findByPredmetAndNastavnikId(Predmet predmet, Long nastavnikId) {
+		return ispitRepository.findByPredmetAndNastavnikId(predmet, nastavnikId);
+	}
+
+	@Override
+	public List<Ispit> findByPredmet(Predmet predmet) {
+		return ispitRepository.findByPredmet(predmet);
+	}
+
 	
 }

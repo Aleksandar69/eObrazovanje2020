@@ -64,9 +64,10 @@ public class PredispitneObavezeSablonController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		PredispitneObavezeSablon sablon = sablonService.findOne(id);
+		System.out.println("NAZIV SABLONA: " +  sablon.getNaziv());
 		if (sablon != null) {
 			sablonService.delete(sablon.getId());
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			return new ResponseEntity(HttpStatus.OK);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}

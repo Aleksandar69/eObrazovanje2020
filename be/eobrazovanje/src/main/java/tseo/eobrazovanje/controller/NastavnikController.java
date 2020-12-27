@@ -1,5 +1,7 @@
 package tseo.eobrazovanje.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +37,16 @@ public class NastavnikController {
 			@RequestParam(value = "prezime", defaultValue = "") String prezime, Pageable pageable) {
 
 		Page<Nastavnik> nastavnici = nastavnikService.findAll(ime, prezime, pageable);
+		
+		List<Nastavnik> nastavnici2 = nastavnikService.findAllLowercaseList(ime, prezime);
+		
+		System.out.println("PRIJE PETLJE NASTAVNICI");
+		for (Nastavnik nastavnik : nastavnici2) {
+			System.out.println("NASTAVNIK: " + nastavnik.getIme());
+		}
+		
 		HttpHeaders headers = new HttpHeaders();
+		System.out.println(nastavnici.getTotalPages());
 		headers.set("total", String.valueOf(nastavnici.getTotalPages()));
 
 		return ResponseEntity.ok().headers(headers).body(nastavnici.getContent());

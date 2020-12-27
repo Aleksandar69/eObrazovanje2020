@@ -65,6 +65,9 @@ public class StudentController {
 			@RequestParam(value = "prezime", defaultValue = "") String prezime, Pageable pageable) {
 
 		Page<Student> studenti = studentService.findAll(ime, prezime, pageable);
+		for(Student student : studenti) {
+			System.out.println(student.getIme());
+		}
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("total", String.valueOf(studenti.getTotalPages()));
 
@@ -227,6 +230,8 @@ public class StudentController {
 	
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody StudentDto student,
 			Errors errors) {
+		Student student2 = studentService.findOne(id);
+		System.out.println("ime studenta: " + student2.getIme());
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}

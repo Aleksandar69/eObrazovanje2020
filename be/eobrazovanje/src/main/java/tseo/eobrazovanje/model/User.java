@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import tseo.eobrazovanje.enumeration.Role;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 	
 	@Id

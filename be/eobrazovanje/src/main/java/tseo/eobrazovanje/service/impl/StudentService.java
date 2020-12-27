@@ -55,7 +55,11 @@ public class StudentService implements StudentServiceInterface {
 	@Override
 	public Student update(StudentDto dto) {
 		Student student = findOne(dto.getId());
+		System.out.println("dto student id:" + dto.getId());
+		System.out.println("dto broj indeksa: " + dto.getBrojIndexa());
+		System.out.println("dto broj telefona: " + dto.getBrojTelefona());
 		if (student == null) {
+			System.out.println("student null");
 			return null;
 		} else {
 			if (!dto.getIme().equals(""))
@@ -68,10 +72,10 @@ public class StudentService implements StudentServiceInterface {
 				student.setAdresa(dto.getAdresa());
 			if (!dto.getBrojIndexa().equals(""))
 				student.setBrojIndexa(dto.getBrojIndexa());
-			if (!dto.getBrojTelefona().equals("") && !dto.getBrojTelefona().equals(student.getBrojTelefona())) {
-
-				student.setBrojTelefona(dto.getBrojTelefona());
-			}
+//			if (!dto.getBrojTelefona().equals("") && !dto.getBrojTelefona().equals(student.getBrojTelefona())) {
+//
+//				student.setBrojTelefona(dto.getBrojTelefona());
+//			}
 
 			return save(student);
 		}
