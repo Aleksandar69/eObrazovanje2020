@@ -3,6 +3,7 @@ package tseo.eobrazovanje.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,29 +95,49 @@ public class StudentService implements StudentServiceInterface {
 
 	@Override
 	public List<PredispitneObaveze> getLatestPredispitneObaveze(Student student, Long predmetId, Date datum) {
-		List<PredispitneObaveze> result = student.getPredispitneObaveze().stream()
-				.filter(p -> p.getSablon().getPredmet().getId() == predmetId && p.getDatum().before(datum))
-				.collect(Collectors.toList());
-		ArrayList<PredispitneObaveze> ret = new ArrayList<>();
-		result.forEach(po -> {
-			boolean isMatch = false;
-			for (int i = 0; i < ret.size(); i++)
-				if (po.getSablon().getId() == ret.get(i).getSablon().getId()) {
-					isMatch = true;
-					if ((po.getDatum().after(ret.get(i).getDatum()))
-							|| (po.getDatum().equals(ret.get(i).getDatum()) && po.getId() > ret.get(i).getId())) {
-						ret.remove(ret.get(i));
-						ret.add(po);
-					}
+		
+		Set<PredispitneObaveze> result = student.getPredispitneObaveze();	
+		
+		ArrayList<PredispitneObaveze> predObaveze = new ArrayList<PredispitneObaveze>();
+		
+		for (PredispitneObaveze po : result) {
+			if(po.getDatum().before(datum)) {
+				if(po.getSablon().getPredmet().getId() == predmetId) {
+					predObaveze.add(po);
 				}
-			if (!isMatch) {
-				ret.add(po);
+			
 			}
-		});
+		}
 
-		// VRACA I NEPOLOZENE, NAKON REFINEMENTA MORAMO PROMENITI LINIJU 71!
-		return ret;
+		
+		return predObaveze;
 	}
+//	
+//	@Override
+//	public List<PredispitneObaveze> getLatestPredispitneObaveze(Student student, Long predmetId, Date datum) {
+//		List<PredispitneObaveze> result = student.getPredispitneObaveze().stream()
+//				.filter(p -> p.getSablon().getPredmet().getId() == predmetId && p.getDatum().before(datum))
+//				.collect(Collectors.toList());
+//		ArrayList<PredispitneObaveze> ret = new ArrayList<>();
+//		result.forEach(po -> {
+//			boolean isMatch = false;
+//			for (int i = 0; i < result.size(); i++)
+//				if (po.getSablon().getId() == result.get(i).getSablon().getId()) {
+//					isMatch = true;
+//					if ((po.getDatum().after(result.get(i).getDatum()))
+//							|| (po.getDatum().equals(result.get(i).getDatum()) && po.getId() > result.get(i).getId())) {
+//						result.remove(result.get(i));
+//						result.add(po);
+//					}
+//				}
+//			if (!isMatch) {
+//				ret.add(po);
+//			}
+//		});
+//
+//		// VRACA I NEPOLOZENE, NAKON REFINEMENTA MORAMO PROMENITI LINIJU 71!
+//		return ret;
+//	}
 
 	@Override
 	public Student create(Student student) {

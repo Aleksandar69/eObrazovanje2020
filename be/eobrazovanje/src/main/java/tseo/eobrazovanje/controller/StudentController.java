@@ -160,6 +160,8 @@ public class StudentController {
 	
 	public ResponseEntity getIspitiZaPrijavu(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
+		
+		System.out.println("Student za prijavu ispita:" + student.getIme());
 		if (student != null) {
 			System.out.println(student);
 			List<Ispit> ispitiZaPrijavu = ispitService.ispitiZaPrijavu(student);
