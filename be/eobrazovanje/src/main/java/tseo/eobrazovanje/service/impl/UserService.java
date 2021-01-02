@@ -23,9 +23,13 @@ import tseo.eobrazovanje.dto.PasswordDto;
 import tseo.eobrazovanje.enumeration.Role;
 import tseo.eobrazovanje.exception.UserNotFoundException;
 import tseo.eobrazovanje.exception.UsernameExistException;
+import tseo.eobrazovanje.model.RegistracijaZahtev;
+import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.model.User;
+import tseo.eobrazovanje.repo.StudentRepository;
 import tseo.eobrazovanje.repo.UserRepository;
 import tseo.eobrazovanje.security.UserPrincipal;
+import tseo.eobrazovanje.service.RegistracijaZahtevServiceInterface;
 import tseo.eobrazovanje.service.UserServiceInterface;
 import static tseo.eobrazovanje.constant.UserImplConstant.*;
 
@@ -45,6 +49,12 @@ public class UserService implements UserServiceInterface, UserDetailsService{
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	StudentRepository studentRepo;
+	
+	@Autowired
+	RegistracijaZahtevServiceInterface zahtevService;
 
 	
 	@Override
@@ -71,17 +81,24 @@ public class UserService implements UserServiceInterface, UserDetailsService{
 	}
 	
     @Override
-    public User register(String firstName, String lastName, String username) throws UserNotFoundException, UsernameExistException {
+    public RegistracijaZahtev register(String firstName, String lastName, String username, String password, String jmbg, String adresa,
+    		String tekuciRacun, String brojIndexa, double stanje, String brojTelefona) throws UserNotFoundException, UsernameExistException {
     	validateNewUsername(StringUtils.EMPTY, username);
-        User user = new User();
-        String password = generatePassword();
+    	RegistracijaZahtev user = new RegistracijaZahtev();
+       // String password = generatePassword();
         user.setIme(firstName);
         user.setPrezime(lastName);
         user.setUsername(username);
         user.setPassword(encodePassword(password));
+        user.setJmbg(jmbg);
+        user.setAdresa(adresa);
         user.setRole(Role.STUDENT.name());
         user.setAuthorities(Role.STUDENT.getAuthorities());
-        userRepository.save(user);
+        user.setTekuciRacun(tekuciRacun);
+        user.setStanje(stanje);
+        user.setBrojIndexa(brojIndexa);
+        user.setBrojTelefona(brojTelefona);
+        zahtevService.save(user);
         LOGGER.info("New user password: " + password);
         return user;
     }

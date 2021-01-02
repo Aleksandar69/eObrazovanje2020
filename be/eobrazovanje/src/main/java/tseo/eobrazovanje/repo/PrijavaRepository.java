@@ -14,13 +14,4 @@ import tseo.eobrazovanje.model.Student;
 @Repository
 public interface PrijavaRepository extends JpaRepository<Prijava, Long> {
 
-	Page<Prijava> findAll(Pageable pageable);
-
-	Page<Prijava> findByStudent(Student student, Pageable pageable);
-
-	Page<Prijava> findByIspit(Ispit ispit, Pageable pageable);
-
-
-	List<Prijava> findByStudent(Student student);
-
 }

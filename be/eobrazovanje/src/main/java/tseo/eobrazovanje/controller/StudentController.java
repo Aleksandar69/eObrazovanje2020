@@ -232,8 +232,6 @@ public class StudentController {
 	
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody StudentDto student,
 			Errors errors) {
-		Student student2 = studentService.findOne(id);
-		System.out.println("ime studenta: " + student2.getIme());
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}

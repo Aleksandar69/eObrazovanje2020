@@ -22,6 +22,7 @@ import tseo.eobrazovanje.dto.StudentDto;
 import tseo.eobrazovanje.enumeration.Role;
 import tseo.eobrazovanje.exception.UserNotFoundException;
 import tseo.eobrazovanje.exception.UsernameExistException;
+import tseo.eobrazovanje.model.RegistracijaZahtev;
 import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.model.User;
 import tseo.eobrazovanje.security.JWTTokenProvider;
@@ -61,8 +62,12 @@ public class UserController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, UsernameExistException {
-        User newUser = userService.register(user.getIme(), user.getPrezime(), user.getUsername());
+    public ResponseEntity<RegistracijaZahtev> register(@RequestBody Student user) throws UserNotFoundException, UsernameExistException {
+    	System.out.println("ADRESA:" + user.getIme());
+    	System.out.println("JMBG:" + user.getJmbg());
+    	System.out.println("ADRESA:" + user.getAdresa());
+    	System.out.println("TEKUCI RACUN: " + user.getTekuciRacun());
+    	RegistracijaZahtev newUser = userService.register(user.getIme(), user.getPrezime(), user.getUsername(), user.getPassword(), user.getJmbg(), user.getAdresa(), user.getTekuciRacun(), user.getBrojIndexa(), user.getStanje(), user.getBrojTelefona());
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
     

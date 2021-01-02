@@ -160,7 +160,6 @@ public class StudentService implements StudentServiceInterface {
 
 	@Override
 	public StudentDto studentDtoMaker(Student student) {
-
 		return dtoBasic(student);
 	}
 
