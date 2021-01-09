@@ -80,7 +80,6 @@ public class PrijavaController {
 	}
 
 	@DeleteMapping("/{id}")
-	
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		if (prijavaService.delete(id)) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -91,7 +90,6 @@ public class PrijavaController {
 	
 
 	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('NASTAVNIK')")
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody PrijavaDto dto, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);

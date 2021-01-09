@@ -1,5 +1,23 @@
 package tseo.eobrazovanje.service.impl;
 
+import static org.springframework.http.MediaType.IMAGE_GIF_VALUE;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
+import static tseo.eobrazovanje.constant.FileConstant.DIRECTORY_CREATED;
+import static tseo.eobrazovanje.constant.FileConstant.DOT;
+import static tseo.eobrazovanje.constant.FileConstant.FILE_SAVED_IN_FILE_SYSTEM;
+import static tseo.eobrazovanje.constant.FileConstant.JPG_EXTENSION;
+import static tseo.eobrazovanje.constant.FileConstant.NOT_AN_IMAGE_FILE;
+import static tseo.eobrazovanje.constant.FileConstant.USER_FOLDER;
+import static tseo.eobrazovanje.constant.UserImplConstant.FOUND_USER_BY_USERNAME;
+import static tseo.eobrazovanje.constant.UserImplConstant.NO_USER_FOUND_BY_USERNAME;
+import static tseo.eobrazovanje.constant.UserImplConstant.USERNAME_ALREADY_EXISTS;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,7 +26,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -18,20 +35,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import tseo.eobrazovanje.dto.PasswordDto;
 import tseo.eobrazovanje.enumeration.Role;
+import tseo.eobrazovanje.exception.NotAnImageFileException;
 import tseo.eobrazovanje.exception.UserNotFoundException;
 import tseo.eobrazovanje.exception.UsernameExistException;
 import tseo.eobrazovanje.model.RegistracijaZahtev;
-import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.model.User;
 import tseo.eobrazovanje.repo.StudentRepository;
 import tseo.eobrazovanje.repo.UserRepository;
 import tseo.eobrazovanje.security.UserPrincipal;
 import tseo.eobrazovanje.service.RegistracijaZahtevServiceInterface;
 import tseo.eobrazovanje.service.UserServiceInterface;
-import static tseo.eobrazovanje.constant.UserImplConstant.*;
+import static tseo.eobrazovanje.constant.FileConstant.*;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 @Service
@@ -49,6 +69,7 @@ public class UserService implements UserServiceInterface, UserDetailsService{
 	
 	@Autowired
 	UserRepository userRepo;
+	
 	
 	@Autowired
 	StudentRepository studentRepo;
@@ -103,6 +124,7 @@ public class UserService implements UserServiceInterface, UserDetailsService{
         return user;
     }
 	
+
 	
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
@@ -158,4 +180,33 @@ public class UserService implements UserServiceInterface, UserDetailsService{
 		return userRepository.save(user);
 	}
 	
+    @Override
+    public User updateProfileImage(String username, MultipartFile profileImage) throws UserNotFoundException, UsernameExistException, IOException, NotAnImageFileException {
+        User user = validateNewUsername(username, null);
+        saveProfileImage(user, profileImage);
+        return user;
+    }
+    
+    private void saveProfileImage(User user, MultipartFile profileImage) throws IOException, NotAnImageFileException {
+        if (profileImage != null) {
+            if(!Arrays.asList(IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE, IMAGE_GIF_VALUE).contains(profileImage.getContentType())) {
+                throw new NotAnImageFileException(profileImage.getOriginalFilename() + NOT_AN_IMAGE_FILE);
+            }
+            Path userFolder = Paths.get(USER_FOLDER + user.getUsername()).toAbsolutePath().normalize();
+            if(!Files.exists(userFolder)) {
+                Files.createDirectories(userFolder);
+                LOGGER.info(DIRECTORY_CREATED + userFolder);
+            }
+            Files.deleteIfExists(Paths.get(userFolder + user.getUsername() + DOT + JPG_EXTENSION));
+            Files.copy(profileImage.getInputStream(), userFolder.resolve(user.getUsername() + DOT + JPG_EXTENSION), REPLACE_EXISTING);
+            user.setProfileImageUrl(setProfileImageUrl(user.getUsername()));
+            userRepository.save(user);
+            LOGGER.info(FILE_SAVED_IN_FILE_SYSTEM + profileImage.getOriginalFilename());
+        }
+    }
+    
+    private String setProfileImageUrl(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username + FORWARD_SLASH
+        + username + DOT + JPG_EXTENSION).toUriString();
+    }
 }

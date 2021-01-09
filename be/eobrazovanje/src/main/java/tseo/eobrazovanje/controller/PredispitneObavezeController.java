@@ -18,21 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import tseo.eobrazovanje.dto.PredispitneObavezeDto;
 import tseo.eobrazovanje.model.PredispitneObaveze;
 import tseo.eobrazovanje.service.impl.NastavnikService;
-import tseo.eobrazovanje.service.impl.PredispitneObavezeSablonService;
 import tseo.eobrazovanje.service.impl.PredispitneObavezeService;
 import tseo.eobrazovanje.service.impl.PredmetService;
-import tseo.eobrazovanje.service.impl.PrijavaService;
-import tseo.eobrazovanje.service.impl.StudentService;
 
 @RestController
 @RequestMapping("/predispitne-obaveze")
 public class PredispitneObavezeController {
-
+	
 	@Autowired
-	PredispitneObavezeService obavezeService;
-
-	@Autowired
-	PredispitneObavezeSablonService sablonService;
+	PredispitneObavezeService sablonService;
 
 	@Autowired
 	NastavnikService nastavnikService;
@@ -40,27 +34,44 @@ public class PredispitneObavezeController {
 	@Autowired
 	PredmetService predmetService;
 
-	@Autowired
-	PrijavaService prijavaService;
-
-	@Autowired
-	StudentService studentService;
-
 	@GetMapping
 	public ResponseEntity getAll() {
 
-		return new ResponseEntity(obavezeService.findAll(), HttpStatus.OK);
+		return new ResponseEntity(sablonService.findAll(), HttpStatus.OK);
 
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity getOne(@PathVariable("id") long id) {
-		PredispitneObaveze pObaveze = obavezeService.findOne(id);
-		if (pObaveze != null) {
-			return new ResponseEntity(pObaveze, HttpStatus.OK);
+		PredispitneObaveze sablon = sablonService.findOne(id);
+		if (sablon != null) {
+			return new ResponseEntity(sablon, HttpStatus.OK);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@GetMapping("/{id}/polaganja")
+	public ResponseEntity getPredispitneObaveze(@PathVariable("id") long id) {
+		PredispitneObaveze sablon = sablonService.findOne(id);
+		if (sablon != null) {
+			return new ResponseEntity(sablon.getPolaganja(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity deleteOne(@PathVariable("id") long id) {
+		PredispitneObaveze sablon = sablonService.findOne(id);
+		System.out.println("NAZIV SABLONA: " +  sablon.getNaziv());
+		if (sablon != null) {
+			sablonService.delete(sablon.getId());
+			return new ResponseEntity(HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+
 	}
 
 	@PostMapping
@@ -69,41 +80,26 @@ public class PredispitneObavezeController {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
 		if (dto != null) {
-			PredispitneObaveze predispitneObaveze = obavezeService.save(dto);
-			return new ResponseEntity(predispitneObaveze, HttpStatus.CREATED);
+			PredispitneObaveze sablon = sablonService.save(dto);
+			return new ResponseEntity(sablon, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity deleteOne(@PathVariable("id") long id) {
-		PredispitneObaveze pObaveze = obavezeService.findOne(id);
-		if (pObaveze != null) {
-			obavezeService.delete(pObaveze.getId());
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
-
-	}
-
 	@PutMapping("/{id}")
-	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody PredispitneObavezeDto dto,
+	public ResponseEntity putOne(@PathVariable("id") Long id, @Validated @RequestBody PredispitneObavezeDto dto,
 			Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
 		}
-		if (dto.getId() != id) {
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		if (dto != null && dto.getId() == id) {
+			PredispitneObaveze sablon = sablonService.save(dto);
+			return new ResponseEntity(sablon, HttpStatus.OK);
 		} else {
-			PredispitneObaveze pObaveze = obavezeService.update(dto);
-			if (pObaveze == null) {
-				return new ResponseEntity(HttpStatus.NOT_FOUND);
-			} else {
-				return new ResponseEntity(pObaveze, HttpStatus.OK);
-			}
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
+
 }

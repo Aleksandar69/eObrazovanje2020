@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import tseo.eobrazovanje.dto.NastavnikDto;
+import tseo.eobrazovanje.enumeration.Role;
 import tseo.eobrazovanje.model.Nastavnik;
 import tseo.eobrazovanje.repo.NastavnikRepository;
 import tseo.eobrazovanje.service.NastavnikServiceInterface;
@@ -19,6 +21,9 @@ public class NastavnikService implements NastavnikServiceInterface{
 	
 	@Autowired
 	NastavnikRepository nastavnikRepository;
+	
+	@Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public Page<Nastavnik> findAll(String ime, String prezime, Pageable pageable) {
@@ -52,9 +57,15 @@ public class NastavnikService implements NastavnikServiceInterface{
 
 	@Override
 	public Nastavnik save(Nastavnik nastavnik) {
+		nastavnik.setPassword(encodePassword(nastavnik.getPassword()));
+		//nastavnik.setAuthorities(Role.NASTAVNIK.getAuthorities());
 		nastavnikRepository.save(nastavnik);
 		return nastavnik;
 	}
+	
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
 
 	@Override
 	public Boolean delete(Long id) {

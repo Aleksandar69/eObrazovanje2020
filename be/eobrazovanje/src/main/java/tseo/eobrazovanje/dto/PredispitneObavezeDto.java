@@ -1,81 +1,71 @@
 package tseo.eobrazovanje.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 public class PredispitneObavezeDto {
 
 	private Long id;
-	private Date datum;
 	@NotNull
-	private float osvojeniBodovi;
+	private Long predmet;
 	@NotNull
-	private Long student;
+	@Min(1)
+	private int ukupnoBodova;
 	@NotNull
-	private Long sablon;
-	private boolean polozio;
+	@Min(1)
+	private int minimumBodova;
+	private String naziv;
 
 	public PredispitneObavezeDto() {
 
 	}
 
-	public PredispitneObavezeDto(Long id, Date datum, float osvojeniBodovi, Long student, Long sablon,
-			boolean polozio) {
-		super();
+	public PredispitneObavezeDto(Long id, Long predmet, int ukupnoBodova, int minimumBodova, String naziv) {
 		this.id = id;
-		this.datum = datum;
-		this.osvojeniBodovi = osvojeniBodovi;
-		this.student = student;
-		this.sablon = sablon;
-		this.polozio = polozio;
+		this.predmet = predmet;
+		this.ukupnoBodova = ukupnoBodova;
+		this.minimumBodova = minimumBodova;
+		this.naziv = naziv;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Date getDatum() {
-		return datum;
+	public Long getPredmet() {
+		return predmet;
 	}
 
-	public float getOsvojeniBodovi() {
-		return osvojeniBodovi;
+	public int getUkupnoBodova() {
+		return ukupnoBodova;
 	}
 
-	public Long getStudent() {
-		return student;
+	public int getMinimumBodova() {
+		return minimumBodova;
 	}
 
-	public Long getSablon() {
-		return sablon;
+	public String getNaziv() {
+		return naziv;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setDatum(Date datum) {
-		this.datum = datum;
+	public void setPredmet(Long predmet) {
+		this.predmet = predmet;
 	}
 
-	public void setOsvojeniBodovi(float osvojeniBodovi) {
-		this.osvojeniBodovi = osvojeniBodovi;
+	public void setUkupnoBodova(int ukupnoBodova) {
+		this.ukupnoBodova = ukupnoBodova;
 	}
 
-	public void setStudent(Long student) {
-		this.student = student;
+	public void setMinimumBodova(int minimumBodova) {
+		this.minimumBodova = minimumBodova;
 	}
 
-	public void setSablon(Long sablon) {
-		this.sablon = sablon;
-	}
-
-	public boolean isPolozio() {
-		return polozio;
-	}
-
-	public void setPolozio(boolean polozio) {
-		this.polozio = polozio;
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
 	}
 
 }

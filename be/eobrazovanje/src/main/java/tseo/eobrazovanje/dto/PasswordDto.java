@@ -3,6 +3,9 @@ package tseo.eobrazovanje.dto;
 import javax.validation.constraints.NotNull;
 
 public class PasswordDto {
+	
+	private String username;
+	
 	@NotNull
 	private String oldPassword;
 	@NotNull
@@ -32,4 +35,13 @@ public class PasswordDto {
 		this.newPassword = newPassword;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	
 }

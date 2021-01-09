@@ -100,7 +100,7 @@ public class StudentController {
 		}
 	}
 
-	@GetMapping("/{id}/predispitne-obaveze")
+	@GetMapping("/{id}/predispitne-obaveze-polaganje")
 	public ResponseEntity getPredispitneObaveze(@PathVariable("id") long id,
 			@RequestParam(value = "predmet", required = false) Long predmetId) {
 		Student student = studentService.findOne(id);

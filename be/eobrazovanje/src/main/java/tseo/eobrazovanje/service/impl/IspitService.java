@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 import tseo.eobrazovanje.dto.IspitDto;
 import tseo.eobrazovanje.model.Ispit;
-import tseo.eobrazovanje.model.PredispitneObaveze;
+import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
 import tseo.eobrazovanje.model.Predmet;
 import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.repo.IspitRepository;
 import tseo.eobrazovanje.service.IspitServiceInterface;
-import tseo.eobrazovanje.service.PredispitneObavezeSablonServiceInterface;
+import tseo.eobrazovanje.service.PredispitneObavezeServiceInterface;
 
 @Service
 public class IspitService implements IspitServiceInterface {
@@ -33,7 +33,7 @@ public class IspitService implements IspitServiceInterface {
 	StudentService studentService;
 
 	@Autowired
-	PredispitneObavezeSablonServiceInterface sabloniService;
+	PredispitneObavezeServiceInterface sabloniService;
 
 	@Autowired
 	PrijavaService prijavaService;
@@ -109,12 +109,12 @@ public class IspitService implements IspitServiceInterface {
 		List<Ispit> ispiti = new ArrayList<>(ispitRepository.findByStudentAndDatum(s, new Date()));
 		List<Ispit> ispitiZaPrijavu = new ArrayList<>();
 		for (Ispit ispit : ispiti) {
-			List<PredispitneObaveze> obaveze = studentService.getLatestPredispitneObaveze(student,
+			List<PredispitneObavezePolaganje> obaveze = studentService.getLatestPredispitneObaveze(student,
 					ispit.getPredmet().getId(), new Date());
 			if (((ispit.getPredmet().getPredispitneObavezeSabloni().size()) != obaveze.size()))
 				continue;
 			boolean polozio = true;
-			for (PredispitneObaveze obaveza : obaveze) {
+			for (PredispitneObavezePolaganje obaveza : obaveze) {
 				if (!obaveza.isPolozio()) {
 					polozio = false;
 					break;

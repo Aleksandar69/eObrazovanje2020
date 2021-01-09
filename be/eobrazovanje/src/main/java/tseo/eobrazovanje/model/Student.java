@@ -48,7 +48,7 @@ public class Student extends User {
 	private Set<Prijava> prijave;
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnore
-	private Set<PredispitneObaveze> predispitneObaveze;
+	private Set<PredispitneObavezePolaganje> predispitneObaveze;
 	@Column(unique=true)
 	private String brojTelefona;
 	
@@ -58,9 +58,9 @@ public class Student extends User {
 	}
 
 	public Student(Long id, String brojIndexa, String tekuciRacun, Double stanje, String username, String password,
-			String ime, String prezime, String jmbg, String adresa, String brojTelefona) {
+			String ime, String prezime, String jmbg, String adresa, String brojTelefona, String profileImageUrl) {
 		super( id,  username,password, ime, prezime, jmbg,adresa,
-				Role.STUDENT.name(), Role.STUDENT.getAuthorities());
+				Role.STUDENT.name() /*,Role.STUDENT.getAuthorities()*/ ,profileImageUrl);
 		this.brojIndexa = brojIndexa;
 		this.tekuciRacun = tekuciRacun;
 		this.stanje = stanje;
@@ -93,7 +93,7 @@ public class Student extends User {
 		return prijave;
 	}
 
-	public Set<PredispitneObaveze> getPredispitneObaveze() {
+	public Set<PredispitneObavezePolaganje> getPredispitneObaveze() {
 		return predispitneObaveze;
 	}
 
@@ -113,7 +113,7 @@ public class Student extends User {
 		this.prijave = prijave;
 	}
 
-	public void setPredispitneObaveze(Set<PredispitneObaveze> predispitneObaveze) {
+	public void setPredispitneObaveze(Set<PredispitneObavezePolaganje> predispitneObaveze) {
 		this.predispitneObaveze = predispitneObaveze;
 	}
 

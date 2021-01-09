@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import tseo.eobrazovanje.dto.PasswordDto;
+import tseo.eobrazovanje.exception.NotAnImageFileException;
 import tseo.eobrazovanje.exception.UserNotFoundException;
 import tseo.eobrazovanje.exception.UsernameExistException;
 import tseo.eobrazovanje.model.RegistracijaZahtev;
@@ -22,7 +24,7 @@ public interface UserServiceInterface {
 	Boolean delete(Long id);
 	ResponseEntity<Void> updatePassword(User user, PasswordDto passwordDto);
 	User save(User user);
-		
+	User updateProfileImage(String username, MultipartFile profileImage) throws UserNotFoundException, UsernameExistException, IOException, NotAnImageFileException;
 
 
 }

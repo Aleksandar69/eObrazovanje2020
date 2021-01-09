@@ -64,7 +64,6 @@ public class NastavnikController {
 	}
 
 	@PostMapping
-	
 	public ResponseEntity postOne(@Validated @RequestBody Nastavnik nastavnik, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);

@@ -111,7 +111,7 @@ public class PredmetController {
 		}
 	}
 
-	@GetMapping("/{id}/predispitne-obaveze-sabloni")
+	@GetMapping("/{id}/predispitne-obaveze")
 	public ResponseEntity getSabloni(@PathVariable("id") long id) {
 		Predmet predmet = predmetService.findOne(id);
 		if (predmet != null) {
@@ -121,7 +121,7 @@ public class PredmetController {
 		}
 	}
 
-	@GetMapping("/{id}/predispitne-obaveze")
+	@GetMapping("/{id}/predispitne-obaveze-polaganje")
 	public ResponseEntity getPredispitneObaveze(@PathVariable("id") long id) {
 		Predmet predmet = predmetService.findOne(id);
 		if (predmet != null) {

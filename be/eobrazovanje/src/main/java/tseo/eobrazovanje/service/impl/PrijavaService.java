@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import tseo.eobrazovanje.dto.PrijavaDto;
 import tseo.eobrazovanje.model.Ispit;
-import tseo.eobrazovanje.model.PredispitneObaveze;
+import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
 import tseo.eobrazovanje.model.Prijava;
 import tseo.eobrazovanje.model.Student;
 import tseo.eobrazovanje.repo.PrijavaRepository;
@@ -97,7 +97,7 @@ public class PrijavaService implements PrijavaServiceInterface{
 			prijava.setPredispitniBodovi(0F);
 		}
 		student.setStanje(student.getStanje() - 200);
-		for (PredispitneObaveze p : studentService.getLatestPredispitneObaveze(student, ispit.getPredmet().getId(),
+		for (PredispitneObavezePolaganje p : studentService.getLatestPredispitneObaveze(student, ispit.getPredmet().getId(),
 				new Date())) {
 			if (!p.isPolozio()) {
 				return null;
@@ -121,7 +121,7 @@ public class PrijavaService implements PrijavaServiceInterface{
 			prijava.setOsvojeniBodoviUsmeni(dto.getOsvojeniBodoviUsmeni());
 			prijava.setOcenjeno(true);
 			prijava.setPredispitniBodovi(0F);
-			for (PredispitneObaveze p : studentService.getLatestPredispitneObaveze(student, ispit.getPredmet().getId(),
+			for (PredispitneObavezePolaganje p : studentService.getLatestPredispitneObaveze(student, ispit.getPredmet().getId(),
 					prijava.getDatumPrijave())) {
 				prijava.setPredispitniBodovi(prijava.getPredispitniBodovi() + p.getOsvojeniBodovi());
 			}

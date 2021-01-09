@@ -75,7 +75,7 @@ public class RegistracijaZahtevController {
 		RegistracijaZahtev rz= zahtevService.findOne(id);
 		if (rz != null) {
 			zahtevService.delete(rz.getId());
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			return new ResponseEntity(HttpStatus.OK);
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}

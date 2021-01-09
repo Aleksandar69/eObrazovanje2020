@@ -30,14 +30,15 @@ public class User {
 	protected String adresa;
 //	@Enumerated(EnumType.STRING)
 	protected String role;
-    private String[] authorities;
+//    private String[] authorities;
+    private String profileImageUrl;
 
 	public User() {
 
 	}
 
 	public User(Long id, String username, String password, String ime, String prezime, String jmbg, String adresa,
-			String role, String[] authorities) {
+			String role /*,String[] authorities*/,String profileImageUrl) {
 		super();
 		this.id = id;
 		this.ime = ime;
@@ -47,8 +48,20 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.adresa = adresa;
-        this.authorities = authorities;
+        //this.authorities = authorities;
+		this.profileImageUrl = profileImageUrl;
 
+	}
+	
+	
+	
+
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
 	}
 
 	public String getUsername() {
@@ -124,12 +137,12 @@ public class User {
 		this.adresa = adresa;
 	}
 
-	public String[] getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(String[] authorities) {
-		this.authorities = authorities;
-	}
+//	public String[] getAuthorities() {
+//		return authorities;
+//	}
+//
+//	public void setAuthorities(String[] authorities) {
+//		this.authorities = authorities;
+//	}
 
 }

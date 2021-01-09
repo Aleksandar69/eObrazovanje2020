@@ -1,102 +1,97 @@
 package tseo.eobrazovanje.model;
 
-import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
 public class PredispitneObaveze {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@NotNull
-	private Date datum;
-	@NotNull
-	private Float osvojeniBodovi;
-	@NotNull
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn
-	private Student student;
-	@NotNull
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn
-	private PredispitneObavezeSablon sablon;
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn
 	private Predmet predmet;
-	private boolean polozio;
+	@NotNull
+	private int ukupnoBodova;
+	@NotNull
+	private int minimumBodova;
+	private String naziv;
+	@OneToMany(mappedBy = "sablon", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<PredispitneObavezePolaganje> polaganja;
 
 	public PredispitneObaveze() {
-
 	}
 
-	public PredispitneObaveze(Long id, Date datum, Float osvojeniBodovi, Student student,
-			PredispitneObavezeSablon sablon, boolean polozio) {
+	public PredispitneObaveze(Long id, Predmet predmet, int ukupnoBodova, int minimumBodova, String naziv,
+			Set<PredispitneObavezePolaganje> polaganja) {
 		super();
 		this.id = id;
-		this.datum = datum;
-		this.osvojeniBodovi = osvojeniBodovi;
-		this.student = student;
-		this.sablon = sablon;
-		this.polozio = polozio;
+		this.predmet = predmet;
+		this.ukupnoBodova = ukupnoBodova;
+		this.minimumBodova = minimumBodova;
+		this.naziv = naziv;
+		this.polaganja = polaganja;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Date getDatum() {
-		return datum;
+	public Predmet getPredmet() {
+		return predmet;
 	}
 
-	public Float getOsvojeniBodovi() {
-		return osvojeniBodovi;
+	public int getUkupnoBodova() {
+		return ukupnoBodova;
 	}
 
-	public Student getStudent() {
-		return student;
+	public int getMinimumBodova() {
+		return minimumBodova;
 	}
 
-	public PredispitneObavezeSablon getSablon() {
-		return sablon;
+	public String getNaziv() {
+		return naziv;
 	}
 
-	public boolean isPolozio() {
-		return polozio;
+	public Set<PredispitneObavezePolaganje> getPolaganja() {
+		return polaganja;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setDatum(Date datum) {
-		this.datum = datum;
+	public void setPredmet(Predmet predmet) {
+		this.predmet = predmet;
 	}
 
-	public void setOsvojeniBodovi(Float osvojeniBodovi) {
-		this.osvojeniBodovi = osvojeniBodovi;
+	public void setUkupnoBodova(int ukupnoBodova) {
+		this.ukupnoBodova = ukupnoBodova;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setMinimumBodova(int minimumBodova) {
+		this.minimumBodova = minimumBodova;
 	}
 
-	public void setSablon(PredispitneObavezeSablon sablon) {
-		this.sablon = sablon;
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
 	}
 
-	public void setPolozio(boolean polozio) {
-		this.polozio = polozio;
+	public void setPolaganja(Set<PredispitneObavezePolaganje> polaganja) {
+		this.polaganja = polaganja;
 	}
-
 }

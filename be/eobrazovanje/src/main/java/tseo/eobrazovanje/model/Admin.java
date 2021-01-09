@@ -11,8 +11,9 @@ public class Admin extends User {
 
 	}
 
-	public Admin(Long id, String username, String password, String ime, String prezime, String jmbg, String adresa, String rola, String[] authorities) {
-		super(id, username, password, ime, prezime, jmbg, adresa, Role.ADMINISTRATOR.name(), Role.ADMINISTRATOR.getAuthorities());
+	public Admin(Long id, String username, String password, String ime, String prezime, String jmbg, String adresa, String rola, String[] authorities, String profileImageUrl) {
+		super(id, username, password, ime, prezime, jmbg, adresa,
+				Role.ADMINISTRATOR.name() /* ,Role.ADMINISTRATOR.getAuthorities() */, profileImageUrl);
 	}
 
 }

@@ -38,8 +38,9 @@ public class Nastavnik extends User {
 	}
 
 	public Nastavnik(Long id, String username, String password, String ime, String prezime, String jmbg,
-			String adresa, String rola, String[] autorities) {
-		super(id, username, password, ime, prezime, jmbg, adresa, Role.NASTAVNIK.name(), Role.NASTAVNIK.getAuthorities());
+			String adresa, String rola, String[] autorities, String profileImageUrl) {
+		super(id, username, password, ime, prezime, jmbg, adresa,
+				Role.NASTAVNIK.name()/* , Role.NASTAVNIK.getAuthorities() */, profileImageUrl);
 	}
 
 	public Set<Predmet> getPredmeti() {

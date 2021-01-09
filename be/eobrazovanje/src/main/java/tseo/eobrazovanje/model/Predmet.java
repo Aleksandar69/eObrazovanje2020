@@ -33,13 +33,13 @@ public class Predmet {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "predmeti")
 	@JsonIgnore
 	private Set<Student> studenti;
-	@OneToMany(mappedBy = "predmet")
+	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH })
 	@JsonIgnore
-	private Set<PredispitneObaveze> predispitneObaveze;
-	@OneToMany(mappedBy = "predmet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<PredispitneObavezePolaganje> predispitneObaveze;
+	@OneToMany(mappedBy = "predmet",  cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH }, fetch = FetchType.EAGER)
 	@JsonIgnore
-	private Set<PredispitneObavezeSablon> predispitneObavezeSabloni;
-	@OneToMany(mappedBy = "predmet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<PredispitneObaveze> predispitneObavezeSabloni;
+	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Ispit> ispiti;
 
@@ -103,7 +103,7 @@ public class Predmet {
 		this.studenti = studenti;
 	}
 
-	public Set<PredispitneObaveze> getPredispitneObaveze() {
+	public Set<PredispitneObavezePolaganje> getPredispitneObaveze() {
 		return predispitneObaveze;
 	}
 
@@ -111,7 +111,7 @@ public class Predmet {
 		return ispiti;
 	}
 
-	public void setPredispitneObaveze(Set<PredispitneObaveze> predispitneObaveze) {
+	public void setPredispitneObaveze(Set<PredispitneObavezePolaganje> predispitneObaveze) {
 		this.predispitneObaveze = predispitneObaveze;
 	}
 
@@ -119,11 +119,11 @@ public class Predmet {
 		this.ispiti = ispiti;
 	}
 
-	public Set<PredispitneObavezeSablon> getPredispitneObavezeSabloni() {
+	public Set<PredispitneObaveze> getPredispitneObavezeSabloni() {
 		return predispitneObavezeSabloni;
 	}
 
-	public void setPredispitneObavezeSabloni(Set<PredispitneObavezeSablon> predispitneObavezeSabloni) {
+	public void setPredispitneObavezeSabloni(Set<PredispitneObaveze> predispitneObavezeSabloni) {
 		this.predispitneObavezeSabloni = predispitneObavezeSabloni;
 	}
 

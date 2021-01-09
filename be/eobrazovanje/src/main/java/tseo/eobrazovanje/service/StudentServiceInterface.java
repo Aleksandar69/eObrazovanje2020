@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import tseo.eobrazovanje.dto.StudentDto;
-import tseo.eobrazovanje.model.PredispitneObaveze;
+import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
 import tseo.eobrazovanje.model.Student;
 
 public interface StudentServiceInterface {
@@ -25,7 +25,7 @@ public interface StudentServiceInterface {
 	
 	List<Student> findAllList();
 
-	List<PredispitneObaveze> getLatestPredispitneObaveze(Student student, Long predmetId, Date datum);
+	List<PredispitneObavezePolaganje> getLatestPredispitneObaveze(Student student, Long predmetId, Date datum);
 
 	Page<Student> findAll(String ime, String prezime, Pageable pageable);
 
