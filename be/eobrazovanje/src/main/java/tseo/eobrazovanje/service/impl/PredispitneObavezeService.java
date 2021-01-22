@@ -8,9 +8,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javassist.NotFoundException;
 import tseo.eobrazovanje.dto.PredispitneObavezeDto;
 import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
+import tseo.eobrazovanje.model.Ispit;
 import tseo.eobrazovanje.model.PredispitneObaveze;
+import tseo.eobrazovanje.repo.IspitRepository;
 import tseo.eobrazovanje.repo.PredispitneObavezePolaganjeRepository;
 import tseo.eobrazovanje.repo.PredispitneObavezeRepository;
 import tseo.eobrazovanje.service.PredispitneObavezeServiceInterface;
@@ -27,11 +30,14 @@ public class PredispitneObavezeService implements PredispitneObavezeServiceInter
 	NastavnikService nastavnikService;
 
 	@Autowired
-	PredispitneObavezePolaganjeService predispitneObavezeService;
+	PredispitneObavezePolaganjeService predispitneObavezePolaganjeService;
 
 	@Autowired
 	PredmetService predmetService;
 
+	@Autowired
+	IspitRepository ispitRepo;
+	
 	@Override
 	public List<PredispitneObaveze> findAll() {
 		return sablonRepository.findAll();
@@ -54,14 +60,34 @@ public class PredispitneObavezeService implements PredispitneObavezeServiceInter
 	}
 
 	@Override
-	public Boolean delete(Long id) {
+	public Boolean delete(Long id) throws NotFoundException {
+		try {
 		PredispitneObaveze sablon = findOne(id);
-		for (PredispitneObavezePolaganje p : sablon.getPolaganja()) {
-			predispitneObavezeService.delete(p.getId());
-		}
-		sablonRepository.deleteById(id);
-		sablonRepository.delete(sablon);
+		if(sablon == null) {
+			throw new NotFoundException("Document not found");
+		} 
+		
+		System.out.println("id: " + id);
+		
+		PredispitneObaveze po = sablonRepository.getOne(id);
+		
+		predispitneObavezePolaganjeService.obrisiPop(po);
+		sablonRepository.obrisiPrepdispitneObaveze(id);
+		
+//		for (PredispitneObavezePolaganje p : sablon.getPolaganja()) {
+//		predispitneObavezeService.delete(p.getId());
+////		repo.deleteInBatch(sablon.getPolaganja());
+//		PredispitneObavezePolaganje pop= predispitneObavezeService.findOne(p.getId());
+////		sablon.dismissChild(p);
+////		pop.dismissParent();
+////		sablon.remove(p);
+//	}
+//		sablonRepository.deleteById(id);
 		System.out.println("deleted sablon id " + id + "sablon name " + sablon.getNaziv());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -75,6 +101,11 @@ public class PredispitneObavezeService implements PredispitneObavezeServiceInter
 		predispitneObavezeSablon.setUkupnoBodova(dto.getUkupnoBodova());
 		predispitneObavezeSablon.setPredmet(predmetService.findOne(dto.getPredmet()));
 		return save(predispitneObavezeSablon);
+	}
+
+	@Override
+	public void obrisi(Long id) {
+		sablonRepository.obrisiPrepdispitneObaveze(id);
 	}
 
 }

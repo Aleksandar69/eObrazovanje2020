@@ -119,7 +119,7 @@ public class PredmetController {
 		} else {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-	}
+	} 
 
 	@GetMapping("/{id}/predispitne-obaveze-polaganje")
 	public ResponseEntity getPredispitneObaveze(@PathVariable("id") long id) {

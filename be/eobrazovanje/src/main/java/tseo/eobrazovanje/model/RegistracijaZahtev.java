@@ -32,7 +32,6 @@ public class RegistracijaZahtev {
 	protected String adresa;
 //	@Enumerated(EnumType.STRING)
 	protected String role;
-    private String[] authorities;
 	@NotNull
 	private String brojIndexa;
 	@NotNull
@@ -64,9 +63,9 @@ public class RegistracijaZahtev {
 
 	
 	public RegistracijaZahtev(String username, String password, String ime, String prezime, String jmbg,
-			String adresa, String role, String[] authorities, String brojIndexa, String tekuciRacun, Double stanje,
+			String adresa, String role,  String brojIndexa, String tekuciRacun, Double stanje,
 //			Set<Dokument> dokumenti, Set<Uplata> uplate, Set<Predmet> predmeti, Set<Prijava> prijave,
-//			Set<PredispitneObaveze> predispitneObaveze, 
+//			Set<PredispitneObaveze> predispitneObaveze, String[] authorities,
 			String brojTelefona) {
 		super();
 		this.username = username;
@@ -76,7 +75,7 @@ public class RegistracijaZahtev {
 		this.jmbg = jmbg;
 		this.adresa = adresa;
 		this.role = role;
-		this.authorities = authorities;
+		//this.authorities = authorities;
 		this.brojIndexa = brojIndexa;
 		this.tekuciRacun = tekuciRacun;
 		this.stanje = stanje;
@@ -222,13 +221,13 @@ public class RegistracijaZahtev {
 		this.adresa = adresa;
 	}
 
-	public String[] getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(String[] authorities) {
-		this.authorities = authorities;
-	}
+//	public String[] getAuthorities() {
+//		return authorities;
+//	}
+//
+//	public void setAuthorities(String[] authorities) {
+//		this.authorities = authorities;
+//	}
 
 	
 

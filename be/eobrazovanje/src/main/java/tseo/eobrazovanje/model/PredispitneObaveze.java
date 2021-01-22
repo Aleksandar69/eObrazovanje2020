@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -21,7 +22,7 @@ public class PredispitneObaveze {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@NotNull
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne
 	@JoinColumn
 	private Predmet predmet;
 	@NotNull
@@ -29,7 +30,7 @@ public class PredispitneObaveze {
 	@NotNull
 	private int minimumBodova;
 	private String naziv;
-	@OneToMany(mappedBy = "sablon", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sablon", cascade =CascadeType.ALL)
 	@JsonIgnore
 	private Set<PredispitneObavezePolaganje> polaganja;
 
@@ -46,7 +47,21 @@ public class PredispitneObaveze {
 		this.naziv = naziv;
 		this.polaganja = polaganja;
 	}
+	
+	public void remove(PredispitneObavezePolaganje pop) {
+		polaganja.remove(pop);
+		pop.setSablon(null);
+	}
 
+    public void dismissChild(PredispitneObavezePolaganje polaganja) {
+        this.polaganja.remove(polaganja);
+    }
+
+    public void dismissChildren() {
+       this.polaganja.forEach(child -> child.dismissParent()); // SYNCHRONIZING THE OTHER SIDE OF RELATIONSHIP 
+       this.polaganja.clear();
+    }
+    
 	public Long getId() {
 		return id;
 	}

@@ -65,7 +65,9 @@ public class IspitService implements IspitServiceInterface {
 
 	@Override
 	public Boolean delete(Long id) {
-		ispitRepository.deleteById(id);
+		Ispit ispit = findOne(id);
+		prijavaService.obrisiPrijavu(ispit);
+		obrisiIspit(id);
 		return true;
 	}
 
@@ -159,6 +161,11 @@ public class IspitService implements IspitServiceInterface {
 	@Override
 	public List<Ispit> findByPredmet(Predmet predmet) {
 		return ispitRepository.findByPredmet(predmet);
+	}
+
+	@Override
+	public void obrisiIspit(Long id) {
+		ispitRepository.obrisiIspit(id);
 	}
 
 	

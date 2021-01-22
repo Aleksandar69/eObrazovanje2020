@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tseo.eobrazovanje.dto.PredispitneObavezePolaganjeDto;
+import tseo.eobrazovanje.model.PredispitneObaveze;
 import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
 import tseo.eobrazovanje.repo.PredispitneObavezePolaganjeRepository;
 import tseo.eobrazovanje.service.PredispitneObavezePolaganjeServiceInterface;
@@ -91,5 +92,11 @@ public class PredispitneObavezePolaganjeService implements PredispitneObavezePol
 			}
 			return save(pObaveze);
 		}
+	}
+
+	@Override
+	public void obrisiPop(PredispitneObaveze po) {
+		
+		predispitneObavezeRepository.obrisiPredispitneObavezePolaganje(po);
 	}
 }

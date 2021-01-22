@@ -1,15 +1,22 @@
 package tseo.eobrazovanje.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
@@ -37,6 +44,7 @@ import tseo.eobrazovanje.service.PrijavaServiceInterface;
 import tseo.eobrazovanje.service.StudentServiceInterface;
 import tseo.eobrazovanje.service.UplataServiceInterface;
 import tseo.eobrazovanje.service.impl.DokumentService;
+import static tseo.eobrazovanje.constant.FileConstant.*;
 
 @RestController
 @RequestMapping("/studenti")
@@ -65,7 +73,7 @@ public class StudentController {
 			@RequestParam(value = "prezime", defaultValue = "") String prezime, Pageable pageable) {
 
 		Page<Student> studenti = studentService.findAll(ime, prezime, pageable);
-		for(Student student : studenti) {
+		for (Student student : studenti) {
 			System.out.println(student.getIme());
 		}
 		HttpHeaders headers = new HttpHeaders();
@@ -117,7 +125,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/predmeti")
-	
+
 	public ResponseEntity getPredmeti(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -128,17 +136,16 @@ public class StudentController {
 		}
 	}
 
-	
-	@PostMapping("/{id}/dokumenti")
-	public ResponseEntity postOne(HttpServletRequest req, @PathVariable Long id,
-			@RequestParam("dokument") MultipartFile file, @RequestParam("naziv") String naziv) {
-		Student student = studentService.findOne(id);
-		if (student != null) {
-			return new ResponseEntity(dokumentService.save(file, naziv, student), HttpStatus.CREATED);
-		} else {
-			return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
-		}
-	}
+//	@PostMapping("/{id}/dokumenti")
+//	public ResponseEntity postOne(HttpServletRequest req, @PathVariable Long id,
+//			@RequestParam("dokument") MultipartFile file, @RequestParam("naziv") String naziv) {
+//		Student student = studentService.findOne(id);
+//		if (student != null) {
+//			return new ResponseEntity(dokumentService.save(file, naziv, student), HttpStatus.CREATED);
+//		} else {
+//			return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
+//		}
+//	}
 
 	@GetMapping("/{id}/prijave")
 //	
@@ -157,10 +164,10 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}/prijava-ispita")
-	
+
 	public ResponseEntity getIspitiZaPrijavu(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
-		
+
 		System.out.println("Student za prijavu ispita:" + student.getIme());
 		if (student != null) {
 			System.out.println(student);
@@ -208,7 +215,7 @@ public class StudentController {
 	}
 
 	@PostMapping
-	
+
 	public ResponseEntity postOne(@Validated @RequestBody Student student, Errors errors) {
 		if (errors.hasErrors()) {
 			return new ResponseEntity(errors.getAllErrors(), HttpStatus.BAD_REQUEST);
@@ -217,7 +224,7 @@ public class StudentController {
 	}
 
 	@DeleteMapping("/{id}")
-	
+
 	public ResponseEntity deleteOne(@PathVariable("id") long id) {
 		Student student = studentService.findOne(id);
 		if (student != null) {
@@ -229,7 +236,7 @@ public class StudentController {
 	}
 
 	@PutMapping("/{id}")
-	
+
 	public ResponseEntity putOne(@PathVariable("id") long id, @Validated @RequestBody StudentDto student,
 			Errors errors) {
 		if (errors.hasErrors()) {
@@ -244,7 +251,7 @@ public class StudentController {
 	}
 
 	@PutMapping("/{id}/broj-telefona")
-	
+
 	public ResponseEntity changePhoneNumber(@PathVariable("id") long id,
 			@Validated @RequestBody StudentDto studentdto) {
 
@@ -257,6 +264,67 @@ public class StudentController {
 			StudentDto dto = studentService.studentDtoMaker(studentService.update(studentdto));
 			return new ResponseEntity(dto, HttpStatus.OK);
 
+		}
+	}
+
+	@PostMapping("/{id}/dokumenti")
+	public ResponseEntity<Dokument> postDocument(@PathVariable("id") long studentId,
+			@RequestParam("file") MultipartFile file, @RequestParam("naziv") String naziv) throws Exception {
+
+		Dokument dokument = dokumentService.save(file, naziv, studentId);
+		dokumentService.save(dokument);
+		return new ResponseEntity<>(dokument, HttpStatus.OK);
+	}
+	
+	@PutMapping("/{id}/dokumenti")
+	public ResponseEntity<Dokument> editDocument(@PathVariable("id") long studentId,
+			@RequestParam("file") MultipartFile file, @RequestParam("naziv") String naziv, @RequestParam("docid") String docId) throws Exception {
+		
+		Dokument dokument = dokumentService.findOne(Long.parseLong(docId));
+		
+		Dokument noviDoc = dokumentService.save(file, naziv, studentId);
+		
+		dokument.setDatumDokumenta(new Date());
+		dokument.setNaziv(noviDoc.getNaziv());
+		dokument.setSadrzaj(noviDoc.getSadrzaj());
+		
+		dokumentService.update(dokument);
+		
+		return new ResponseEntity<>(dokument, HttpStatus.OK);
+	}
+
+//    @GetMapping(path = "/documents/{username}/{fileName}", produces = MediaType.APPLICATION_PDF_VALUE)
+//    public byte[] getDocument(@PathVariable("username") String username, @PathVariable("fileName") String fileName) throws IOException {
+//    	return Files.readAllBytes(Paths.get(USER_FOLDER + username + FORWARD_SLASH + fileName));
+//    }
+
+	@GetMapping(path = "/documents/{username}/{fileName}", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity getDocument(@PathVariable("username") String username,
+			@PathVariable("fileName") String fileName) throws IOException {
+
+		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+		Files.readAllBytes(Paths.get(USER_FOLDER + username + FORWARD_SLASH + fileName));
+
+		if (MediaType.APPLICATION_PDF_VALUE.contains(extension)) {
+
+			ByteArrayInputStream bis = new ByteArrayInputStream(
+					Files.readAllBytes(Paths.get(USER_FOLDER + username + FORWARD_SLASH + fileName)));
+			HttpHeaders headers = new HttpHeaders();
+
+			headers.add("Content-Disposition", "inline; filename=" + fileName + ".pdf");
+
+			return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
+					.body(new InputStreamResource(bis));
+		}
+
+		else if (MediaType.IMAGE_JPEG_VALUE.contains(extension) || MediaType.IMAGE_PNG_VALUE.contains(extension)
+				|| "jpg".contains(extension)) {
+			return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG)
+					.body(Files.readAllBytes(Paths.get(USER_FOLDER + username + FORWARD_SLASH + fileName)));
+		}
+		else {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 	}
 

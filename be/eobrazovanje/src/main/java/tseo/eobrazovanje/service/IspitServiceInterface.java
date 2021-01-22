@@ -35,4 +35,5 @@ public interface IspitServiceInterface {
 	
 	List<Ispit> findByPredmet(Predmet predmet);
 
+	void obrisiIspit(Long id);
 }

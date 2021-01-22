@@ -27,19 +27,19 @@ public class Predmet {
 	private String oznaka;
 	@NotNull
 	private int espb;
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "predmeti")
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "predmeti") //, cascade = { CascadeType.PERSIST, CascadeType.MERGE }
 	@JsonIgnore
 	private Set<Nastavnik> nastavnici;
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "predmeti")
+	@ManyToMany(fetch = FetchType.EAGER,  mappedBy = "predmeti") //, cascade = { CascadeType.PERSIST, CascadeType.MERGE }
 	@JsonIgnore
 	private Set<Student> studenti;
-	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH })
+	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.ALL })
 	@JsonIgnore
 	private Set<PredispitneObavezePolaganje> predispitneObaveze;
-	@OneToMany(mappedBy = "predmet",  cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "predmet",  cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<PredispitneObaveze> predispitneObavezeSabloni;
-	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH }, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "predmet", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<Ispit> ispiti;
 

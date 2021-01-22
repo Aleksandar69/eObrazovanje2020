@@ -21,7 +21,7 @@ public class EobrazovanjeApplication {
 		SpringApplication.run(EobrazovanjeApplication.class, args);
 	}
 	
-	
+	 
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();

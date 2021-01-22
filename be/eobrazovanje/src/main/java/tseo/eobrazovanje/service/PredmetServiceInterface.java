@@ -38,4 +38,5 @@ public interface PredmetServiceInterface {
 
 	Predmet findByOznaka(String oznaka);
 	
+	void obrisiPredmet(Long id);
 }

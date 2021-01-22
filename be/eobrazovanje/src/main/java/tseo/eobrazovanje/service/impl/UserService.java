@@ -114,7 +114,7 @@ public class UserService implements UserServiceInterface, UserDetailsService{
         user.setJmbg(jmbg);
         user.setAdresa(adresa);
         user.setRole(Role.STUDENT.name());
-        user.setAuthorities(Role.STUDENT.getAuthorities());
+     //   user.setAuthorities(Role.STUDENT.getAuthorities());
         user.setTekuciRacun(tekuciRacun);
         user.setStanje(stanje);
         user.setBrojIndexa(brojIndexa);
@@ -205,8 +205,10 @@ public class UserService implements UserServiceInterface, UserDetailsService{
         }
     }
     
+    
     private String setProfileImageUrl(String username) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username + FORWARD_SLASH
         + username + DOT + JPG_EXTENSION).toUriString();
     }
+
 }

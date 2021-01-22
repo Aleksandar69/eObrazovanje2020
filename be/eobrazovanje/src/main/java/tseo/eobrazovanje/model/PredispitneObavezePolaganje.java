@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 
 import com.sun.istack.NotNull;
 
@@ -24,15 +25,16 @@ public class PredispitneObavezePolaganje {
 	@NotNull
 	private Float osvojeniBodovi;
 	@NotNull
-	@ManyToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne
 	@JoinColumn
 	private Student student;
-	@NotNull
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	
+	@ManyToOne
 	@JoinColumn
 	private PredispitneObaveze sablon;
-	@ManyToOne(cascade = CascadeType.REFRESH)
-	@JoinColumn
+	
+	@ManyToOne
+	@JoinColumn 
 	private Predmet predmet;
 	private boolean polozio;
 
@@ -49,6 +51,12 @@ public class PredispitneObavezePolaganje {
 		this.student = student;
 		this.sablon = sablon;
 		this.polozio = polozio;
+	}
+	
+
+	public void dismissParent() {
+        this.sablon.dismissChild(this); //SYNCHRONIZING THE OTHER SIDE OF RELATIONSHIP
+        this.sablon = null;
 	}
 
 	public Long getId() {
@@ -106,6 +114,7 @@ public class PredispitneObavezePolaganje {
 	public void setPredmet(Predmet predmet) {
 		this.predmet = predmet;
 	}
+
 
 	
 }

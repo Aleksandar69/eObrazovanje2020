@@ -81,10 +81,6 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<RegistracijaZahtev> register(@RequestBody Student user) throws UserNotFoundException, UsernameExistException {
-    	System.out.println("ADRESA:" + user.getIme());
-    	System.out.println("JMBG:" + user.getJmbg());
-    	System.out.println("ADRESA:" + user.getAdresa());
-    	System.out.println("TEKUCI RACUN: " + user.getTekuciRacun());
     	RegistracijaZahtev newUser = userService.register(user.getIme(), user.getPrezime(), user.getUsername(), user.getPassword(), user.getJmbg(), user.getAdresa(), user.getTekuciRacun(), user.getBrojIndexa(), user.getStanje(), user.getBrojTelefona());
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }

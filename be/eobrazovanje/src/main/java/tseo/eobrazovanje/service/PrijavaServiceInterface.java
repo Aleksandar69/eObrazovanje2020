@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import tseo.eobrazovanje.dto.PrijavaDto;
+import tseo.eobrazovanje.model.Ispit;
 import tseo.eobrazovanje.model.Prijava;
 import tseo.eobrazovanje.model.Student;
 
@@ -29,5 +30,7 @@ public interface PrijavaServiceInterface {
 	Page<Prijava> getPrijavaByStudent(Student student, Pageable pageable);
 
 	List<Prijava> getPrijavljeniIspiti(Student student);
+	
+	void obrisiPrijavu(Ispit ispit);
 
 }

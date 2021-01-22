@@ -19,10 +19,12 @@ public class Prijava {
 	private Long id;
 	@NotNull
 	private Date datumPrijave;
+	
 	@NotNull
 	@ManyToOne
 	@JoinColumn
 	private Ispit ispit;
+	
 	@NotNull
 	@ManyToOne
 	@JoinColumn

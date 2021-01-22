@@ -1,10 +1,9 @@
-Dodavanjem nastavnika i studenta se ne dodaje role, a i password nije enkriptovan.
-
-brisanje ispita i predispitnih u administraciji predmeta ne radi
-
-ogranicavanje koja rola moze da pristupi kom url-u
-
-
-Administracija>studenti>dokumenti add/edit
 
 Administracija>studenti> edit broj telefona zeza
+
+Modeli
+front end
+cuustomhttpresponse sta je front
+validacija
+Kad se doda novi entitet paginacija se ujebe
+probaj pulovati na laptop

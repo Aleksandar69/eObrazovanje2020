@@ -162,6 +162,11 @@ public class PrijavaService implements PrijavaServiceInterface{
 	public List<Prijava> getPrijavaByStudent(Student student) {
 		return prijavaRepository.findByStudent(student);
 	}
+
+	@Override
+	public void obrisiPrijavu(Ispit ispit) {
+		prijavaRepository.obrisiPrijavu(ispit);
+	}
 	
 
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import tseo.eobrazovanje.constant.FileConstant;
 import tseo.eobrazovanje.dto.StudentDto;
 import tseo.eobrazovanje.enumeration.Role;
 import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
@@ -46,6 +47,7 @@ public class StudentService implements StudentServiceInterface {
 
 	@Override
 	public Student save(Student student) {
+		student.setProfileImageUrl(FileConstant.TEMP_IMAGE);
 		return studentRepository.save(student);
 	}
 
@@ -53,6 +55,7 @@ public class StudentService implements StudentServiceInterface {
 	public Student changePassword(Student student) {
 		student.setPassword(encodePassword(student.getPassword()));
 	//	student.setAuthorities(Role.STUDENT.getAuthorities());
+		student.setProfileImageUrl(FileConstant.TEMP_IMAGE);
 		student.setStanje(0.0);
 		return save(student);
 	}
@@ -70,24 +73,23 @@ public class StudentService implements StudentServiceInterface {
 		if (student == null) {
 			System.out.println("student null");
 			return null;
-		} else {
+		} else { 
 			if (!dto.getIme().equals(""))
 				student.setIme(dto.getIme());
-			if (!dto.getPrezime().equals(""))
-				student.setPrezime(dto.getPrezime());
+			if (!dto.getPrezime().equals("")) 
+				student.setPrezime(dto.getPrezime()); 
 			if (!dto.getUsername().equals(""))
-				student.setUsername(dto.getUsername());
+				student.setUsername(dto.getUsername()); 
 			if (!dto.getAdresa().equals(""))
 				student.setAdresa(dto.getAdresa());
 			if (!dto.getBrojIndexa().equals(""))
 				student.setBrojIndexa(dto.getBrojIndexa());
-//			if (!dto.getBrojTelefona().equals("") && !dto.getBrojTelefona().equals(student.getBrojTelefona())) {
-//
-//				student.setBrojTelefona(dto.getBrojTelefona());
-//			}
+			if (!dto.getBrojTelefona().equals("") && !dto.getBrojTelefona().equals(student.getBrojTelefona()) || dto.getBrojTelefona() != null) {
+				student.setBrojTelefona(dto.getBrojTelefona());
+			}
 
 			return save(student);
-		}
+		} 
 	}
 
 	@Override

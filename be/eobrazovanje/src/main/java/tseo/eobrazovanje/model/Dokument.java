@@ -22,7 +22,7 @@ public class Dokument {
 	@NotNull
 	private String naziv;
 	@NotNull
-	private String sadrzaj;
+	private String dokumentLokacija;
 	@ManyToOne
 	@JoinColumn(name = "student_id")
 	private Student student;
@@ -34,9 +34,11 @@ public class Dokument {
 		this.id = id;
 		this.datumDokumenta = datumDokumenta;
 		this.naziv = naziv;
-		this.sadrzaj = sadrzaj;
+		this.dokumentLokacija = sadrzaj;
 		this.student = student;
 	}
+	
+	
 
 	public Long getId() {
 		return id;
@@ -63,11 +65,11 @@ public class Dokument {
 	}
 
 	public String getSadrzaj() {
-		return sadrzaj;
+		return dokumentLokacija;
 	}
 
 	public void setSadrzaj(String sadrzaj) {
-		this.sadrzaj = sadrzaj;
+		this.dokumentLokacija = sadrzaj;
 	}
 
 	public Student getStudent() {

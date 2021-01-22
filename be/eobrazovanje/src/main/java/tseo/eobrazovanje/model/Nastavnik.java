@@ -29,6 +29,7 @@ public class Nastavnik extends User {
 	@JoinTable
 	@JsonIgnore
 	private Set<Predmet> predmeti;
+	
 	@OneToMany(mappedBy = "nastavnik", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Ispit> ispiti;
@@ -41,7 +42,7 @@ public class Nastavnik extends User {
 			String adresa, String rola, String[] autorities, String profileImageUrl) {
 		super(id, username, password, ime, prezime, jmbg, adresa,
 				Role.NASTAVNIK.name()/* , Role.NASTAVNIK.getAuthorities() */, profileImageUrl);
-	}
+	} 
 
 	public Set<Predmet> getPredmeti() {
 		return predmeti;

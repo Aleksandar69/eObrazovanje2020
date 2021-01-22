@@ -10,10 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import tseo.eobrazovanje.constant.FileConstant;
 import tseo.eobrazovanje.dto.NastavnikDto;
 import tseo.eobrazovanje.enumeration.Role;
+import tseo.eobrazovanje.model.Ispit;
 import tseo.eobrazovanje.model.Nastavnik;
 import tseo.eobrazovanje.repo.NastavnikRepository;
+import tseo.eobrazovanje.service.IspitServiceInterface;
 import tseo.eobrazovanje.service.NastavnikServiceInterface;
 
 @Service
@@ -21,6 +24,9 @@ public class NastavnikService implements NastavnikServiceInterface{
 	
 	@Autowired
 	NastavnikRepository nastavnikRepository;
+	
+	@Autowired
+	IspitServiceInterface ispitService;
 	
 	@Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -59,6 +65,7 @@ public class NastavnikService implements NastavnikServiceInterface{
 	public Nastavnik save(Nastavnik nastavnik) {
 		nastavnik.setPassword(encodePassword(nastavnik.getPassword()));
 		//nastavnik.setAuthorities(Role.NASTAVNIK.getAuthorities());
+		nastavnik.setProfileImageUrl(FileConstant.TEMP_IMAGE);
 		nastavnikRepository.save(nastavnik);
 		return nastavnik;
 	}
@@ -69,7 +76,11 @@ public class NastavnikService implements NastavnikServiceInterface{
 
 	@Override
 	public Boolean delete(Long id) {
-		nastavnikRepository.deleteById(id);
+		Nastavnik nastavnik = findOne(id);
+		for (Ispit ispit : nastavnik.getIspiti()) {
+			ispitService.obrisiIspit(ispit.getId());
+		}
+		obrisiNastavnika(id);
 		return true;
 	}
 
@@ -100,6 +111,12 @@ public class NastavnikService implements NastavnikServiceInterface{
 				nastavnik.setAdresa(dto.getAdresa());
 			return save(nastavnik);
 		}
+	}
+
+
+	@Override
+	public void obrisiNastavnika(Long id) {
+		nastavnikRepository.obrisi(id);
 	}
 
 

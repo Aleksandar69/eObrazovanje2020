@@ -16,5 +16,5 @@ public interface DokumentRepository extends JpaRepository<Dokument, Long> {
 	Page<Dokument> findAllByNazivIgnoreCaseContains(String naziv, Pageable pageable);
 
 	Page<Dokument> findByStudent(Student student, Pageable pageable);
-
+	
 }

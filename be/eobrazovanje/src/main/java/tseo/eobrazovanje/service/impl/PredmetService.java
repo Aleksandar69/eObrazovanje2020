@@ -9,7 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import tseo.eobrazovanje.model.Ispit;
 import tseo.eobrazovanje.model.Nastavnik;
+import tseo.eobrazovanje.model.PredispitneObaveze;
+import tseo.eobrazovanje.model.PredispitneObavezePolaganje;
 import tseo.eobrazovanje.model.Predmet;
 import tseo.eobrazovanje.model.Prijava;
 import tseo.eobrazovanje.model.Student;
@@ -33,6 +36,12 @@ public class PredmetService implements PredmetServiceInterface{
 	
 	@Autowired
 	PrijavaService prijavaService;
+	
+	@Autowired
+	PredispitneObavezeService poService;
+	
+	@Autowired
+	PredispitneObavezePolaganjeService popService;
 
 
 	@Override
@@ -52,7 +61,18 @@ public class PredmetService implements PredmetServiceInterface{
 
 	@Override
 	public Boolean delete(Long id) {
-		predmetRepository.deleteById(id);
+		Predmet predmet = findOne(id);
+		for (Ispit ispit : predmet.getIspiti()) {
+			prijavaService.obrisiPrijavu(ispit);
+			ispitiService.obrisiIspit(ispit.getId());
+		}
+		
+		for(PredispitneObaveze po : predmet.getPredispitneObavezeSabloni()) {
+			popService.obrisiPop(po);
+			poService.obrisi(po.getId());
+		}
+		
+		obrisiPredmet(id);
 		return true;
 	}
 
@@ -158,5 +178,9 @@ public class PredmetService implements PredmetServiceInterface{
 		return predmetRepository.findByOznaka(oznaka);
 	}
 
+	@Override
+	public void obrisiPredmet(Long id) {
+		predmetRepository.obrisiPredmet(id);
+	}
 
 }

@@ -12,18 +12,20 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import tseo.eobrazovanje.dto.DokumentDto;
 import tseo.eobrazovanje.model.Dokument;
 import tseo.eobrazovanje.service.impl.DokumentService;
 
 @RestController
-@RequestMapping("/dokument")
+@RequestMapping("/dokumenti")
 public class DokumentController {
 
 	@Autowired
@@ -82,6 +84,17 @@ public class DokumentController {
 			}
 		}
 	}
+	
+//	@PostMapping()
+//	public ResponseEntity<Dokument> postDocument(@RequestParam("file") MultipartFile file,
+//			@RequestParam("naziv") String naziv, @RequestParam("studentId") long studentId) throws Exception{
+//		
+//		System.out.println("naziv: " +naziv);
+//		System.out.println("stid:" +studentId);
+//		
+//		Dokument dokument = dokumentService.save(file, naziv, studentId);
+//		return new ResponseEntity<>(dokument, HttpStatus.OK);	}
+//	
 	
 	
 }

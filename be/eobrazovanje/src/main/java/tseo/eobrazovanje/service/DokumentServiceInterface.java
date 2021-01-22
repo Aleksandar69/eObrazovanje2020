@@ -16,8 +16,10 @@ public interface DokumentServiceInterface {
 
 	Boolean delete(Long id);
 
-	Dokument save(MultipartFile file, String naziv, Student student);
+	Dokument save(MultipartFile file, String naziv, long studentId) throws Exception;
 
+	Dokument update(Dokument dokument);
+	
 	Dokument update(DokumentDto dto);
 
 	Page<Dokument> findAll(String naziv, Pageable pageable);

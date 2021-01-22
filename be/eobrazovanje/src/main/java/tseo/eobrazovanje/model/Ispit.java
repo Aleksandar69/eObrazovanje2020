@@ -3,6 +3,7 @@ package tseo.eobrazovanje.model;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,7 @@ public class Ispit {
 	private Float usmeniUkupnoBodova;
 	@NotNull
 	private Date rokZaPrijavu;
-	@OneToMany(mappedBy = "ispit")
+	@OneToMany(mappedBy = "ispit", cascade =CascadeType.ALL) 
 	@JsonIgnore
 	private Set<Prijava> prijave;
 

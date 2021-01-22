@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javassist.NotFoundException;
 import tseo.eobrazovanje.dto.PredispitneObavezeDto;
 import tseo.eobrazovanje.model.PredispitneObaveze;
 import tseo.eobrazovanje.service.impl.NastavnikService;
@@ -62,14 +63,13 @@ public class PredispitneObavezeController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity deleteOne(@PathVariable("id") long id) {
+	public ResponseEntity deleteOne(@PathVariable("id") long id) throws NotFoundException {
 		PredispitneObaveze sablon = sablonService.findOne(id);
-		System.out.println("NAZIV SABLONA: " +  sablon.getNaziv());
 		if (sablon != null) {
 			sablonService.delete(sablon.getId());
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity( HttpStatus.OK);
 		} else {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
 	}

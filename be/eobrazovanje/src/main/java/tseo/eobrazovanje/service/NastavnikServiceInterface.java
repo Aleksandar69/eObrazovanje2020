@@ -25,5 +25,7 @@ public interface NastavnikServiceInterface {
 	Nastavnik changePassword(Nastavnik nastavnik);
 	
 	List<Nastavnik> findAllLowercaseList(String ime, String prezime);
+	
+	void obrisiNastavnika(Long id);
 
 }

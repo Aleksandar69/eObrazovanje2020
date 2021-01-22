@@ -2,6 +2,7 @@ package tseo.eobrazovanje.service;
 
 import java.util.List;
 
+import javassist.NotFoundException;
 import tseo.eobrazovanje.dto.PredispitneObavezeDto;
 import tseo.eobrazovanje.model.PredispitneObaveze;
 
@@ -13,8 +14,9 @@ public interface PredispitneObavezeServiceInterface{
 
 	PredispitneObaveze save(PredispitneObaveze predispitneObavezeSablon);
 
-	Boolean delete(Long id);
+	Boolean delete(Long id) throws NotFoundException;
 
 	PredispitneObaveze save(PredispitneObavezeDto dto);
 	
+	void obrisi(Long id);
 }
