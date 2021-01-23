@@ -36,7 +36,7 @@ public class EobrazovanjeApplication {
 		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 		return new CorsFilter(urlBasedCorsConfigurationSource);
-	}
+	} 
 	
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
