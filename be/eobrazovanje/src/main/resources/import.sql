@@ -95,7 +95,7 @@ INSERT INTO `ispit` VALUES (1,'2021-03-20 01:00:00.000000','2021-03-05 01:00:00.
 /*!40000 ALTER TABLE `ispit` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
+ 
 
 --
 -- Dumping data for table `nastavnik_predmeti`
@@ -103,7 +103,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `nastavnik_predmeti` WRITE;
 /*!40000 ALTER TABLE `nastavnik_predmeti` DISABLE KEYS */;
-INSERT INTO `nastavnik_predmeti` VALUES (23,1),(25,2),(22,3),(25,4),(26,4);
+INSERT INTO `nastavnik_predmeti` VALUES (23,1),(25,2),(22,3),(24,3),(25,4),(26,4); 
 /*!40000 ALTER TABLE `nastavnik_predmeti` ENABLE KEYS */;
 UNLOCK TABLES;
 
